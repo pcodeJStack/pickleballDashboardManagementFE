@@ -1,6 +1,6 @@
 "use client";
-import LeftHeroSection from "@/app/components/lefthero_section/page";
-import RightHeroSection from "@/app/components/righthero_section/page";
+import LeftHeroSection from "@/components/lefthero_section/page";
+import RightHeroSection from "@/components/righthero_section/page";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 type LoginFormValues = {
