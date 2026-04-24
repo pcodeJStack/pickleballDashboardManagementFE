@@ -7,7 +7,7 @@ const LeftHeroSection = () => {
       </div>
 
       <div className="space-y-4">
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight">
           Hệ thống quản trị Pickleball
           <span className="block text-amber-400">Smart Dashboard</span>
           <span className="block text-sky-300">
