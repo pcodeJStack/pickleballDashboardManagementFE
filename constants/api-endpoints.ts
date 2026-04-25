@@ -1,5 +1,6 @@
 export const AUTH_API = {
   LOGIN: "/auth/login",
+  CUSTOMER_REGISTER: "/auth/customer/register",
   REFRESH_TOKEN: "/auth/refresh-token",
   LOGOUT: "/auth/logout",
 };
@@ -36,4 +37,12 @@ export const TIMESLOT_API = {
 export const COURT_PRICING_API = {
   GET_ALL: "/court-pricings",
   CREATE: "/court-pricings",
+};
+
+export const AVAILABLE_SLOT_API = {
+  GET_ALL: "/available-slots",
+};
+
+export const BOOKING_API = {
+  CREATE: "/booking",
 };

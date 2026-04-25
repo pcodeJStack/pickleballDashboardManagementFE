@@ -1,5 +1,5 @@
 import { axiosClient } from "../lib/axiosClient";
-import { LoginPayload } from "../types/auth.type";
+import { CustomerRegisterPayload, LoginPayload } from "../types/auth.type";
 
 export const authService = {
   login: async ({ email, password, deviceId, deviceInfo }: LoginPayload) => {
@@ -7,5 +7,20 @@ export const authService = {
       withCredentials: true,
     });
     return res.data;
-  }
+  },
+  customerRegister: async ({
+    email,
+    password,
+    fullName,
+    phone,
+  }: CustomerRegisterPayload) => {
+    const res = await axiosClient.post("/auth/customer/register", {
+      email,
+      password,
+      fullName,
+      phone,
+    });
+
+    return res.data;
+  },
 };

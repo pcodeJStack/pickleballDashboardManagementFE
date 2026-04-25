@@ -103,7 +103,7 @@ const DAY_OF_WEEK_OPTIONS: Array<{ value: DayOfWeek; label: string }> = [
   { value: "SUNDAY", label: "Chủ nhật" },
 ];
 
-const TimeSlotsManagementPage = () => { 
+const TimeSlotsManagementPage = () => {
   const [page, setPage] = useState(0);
   const size = 5;
 
@@ -127,7 +127,8 @@ const TimeSlotsManagementPage = () => {
   const [isPricingBranchSelectOpen, setIsPricingBranchSelectOpen] =
     useState(false);
   const [isPricingZoneSelectOpen, setIsPricingZoneSelectOpen] = useState(false);
-  const [isPricingCourtSelectOpen, setIsPricingCourtSelectOpen] = useState(false);
+  const [isPricingCourtSelectOpen, setIsPricingCourtSelectOpen] =
+    useState(false);
   const [isTableBranchSelectOpen, setIsTableBranchSelectOpen] = useState(false);
   const [isTableZoneSelectOpen, setIsTableZoneSelectOpen] = useState(false);
   const [isTableCourtSelectOpen, setIsTableCourtSelectOpen] = useState(false);
@@ -140,8 +141,7 @@ const TimeSlotsManagementPage = () => {
   const [hasRequestedTableBranches, setHasRequestedTableBranches] =
     useState(false);
   const [hasRequestedTableZones, setHasRequestedTableZones] = useState(false);
-  const [hasRequestedTableCourts, setHasRequestedTableCourts] =
-    useState(false);
+  const [hasRequestedTableCourts, setHasRequestedTableCourts] = useState(false);
 
   const handlePricingBranchDropdownOpenChange = (isOpen: boolean) => {
     setIsPricingBranchSelectOpen(isOpen);
@@ -191,14 +191,13 @@ const TimeSlotsManagementPage = () => {
     hasNextPage: hasNextBranchPage,
     isFetchingNextPage: isFetchingNextBranchPage,
     fetchNextPage: fetchNextBranchPage,
-  } =
-    useGetAllBranchesInfiniteQuery({
-      size: 3,
-      name: "",
-      address: "",
-      phone: "",
-      enabled: hasRequestedPricingBranches,
-    });
+  } = useGetAllBranchesInfiniteQuery({
+    size: 3,
+    name: "",
+    address: "",
+    phone: "",
+    enabled: hasRequestedPricingBranches,
+  });
   const branchItems = useMemo(
     () => branchesData?.pages.flatMap((branchPage) => branchPage.items) ?? [],
     [branchesData],
@@ -238,7 +237,8 @@ const TimeSlotsManagementPage = () => {
     enabled: hasRequestedPricingCourts && Boolean(pricingForm.branchId),
   });
   const courtItems = useMemo(
-    () => pricingCourtsData?.pages.flatMap((courtPage) => courtPage.items) ?? [],
+    () =>
+      pricingCourtsData?.pages.flatMap((courtPage) => courtPage.items) ?? [],
     [pricingCourtsData],
   );
 
@@ -256,7 +256,8 @@ const TimeSlotsManagementPage = () => {
     enabled: hasRequestedTableBranches,
   });
   const tableBranchItems = useMemo(
-    () => tableBranchesData?.pages.flatMap((branchPage) => branchPage.items) ?? [],
+    () =>
+      tableBranchesData?.pages.flatMap((branchPage) => branchPage.items) ?? [],
     [tableBranchesData],
   );
 
@@ -356,7 +357,6 @@ const TimeSlotsManagementPage = () => {
       branchId: pricingFiltersApplied.branchId || undefined,
       zoneId: pricingFiltersApplied.zoneId || undefined,
       courtId: pricingFiltersApplied.courtId || undefined,
-      dayOfWeek: (pricingFiltersApplied.dayOfWeek as DayOfWeek) || undefined,
       startTime: normalizeTimeForApi(pricingFiltersApplied.startTime),
       endTime: normalizeTimeForApi(pricingFiltersApplied.endTime),
     },
@@ -490,7 +490,9 @@ const TimeSlotsManagementPage = () => {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <h1 className="text-lg font-semibold text-slate-50">Quản lý khung giờ</h1>
+          <h1 className="text-lg font-semibold text-slate-50">
+            Quản lý khung giờ
+          </h1>
           <p className="text-xs text-slate-400">
             Quản trị danh sách thời gian hoạt động để tạo lịch đặt sân.
           </p>
@@ -528,7 +530,9 @@ const TimeSlotsManagementPage = () => {
 
             <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Giờ bắt đầu *</label>
+                <label className="text-[11px] text-slate-400">
+                  Giờ bắt đầu *
+                </label>
                 <Select
                   value={form.startTime || NONE_OPTION}
                   onValueChange={(value) =>
@@ -548,7 +552,9 @@ const TimeSlotsManagementPage = () => {
                     sideOffset={6}
                     avoidCollisions={false}
                   >
-                    <SelectItem value={NONE_OPTION}>Chọn giờ bắt đầu</SelectItem>
+                    <SelectItem value={NONE_OPTION}>
+                      Chọn giờ bắt đầu
+                    </SelectItem>
                     {TIME_OPTIONS.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
@@ -559,7 +565,9 @@ const TimeSlotsManagementPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Giờ kết thúc *</label>
+                <label className="text-[11px] text-slate-400">
+                  Giờ kết thúc *
+                </label>
                 <Select
                   value={form.endTime || NONE_OPTION}
                   onValueChange={(value) =>
@@ -579,7 +587,9 @@ const TimeSlotsManagementPage = () => {
                     sideOffset={6}
                     avoidCollisions={false}
                   >
-                    <SelectItem value={NONE_OPTION}>Chọn giờ kết thúc</SelectItem>
+                    <SelectItem value={NONE_OPTION}>
+                      Chọn giờ kết thúc
+                    </SelectItem>
                     {TIME_OPTIONS.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
@@ -636,7 +646,9 @@ const TimeSlotsManagementPage = () => {
 
             <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
               <div className="space-y-1.5 sm:col-span-2">
-                <label className="text-[11px] text-slate-400">Chi nhánh *</label>
+                <label className="text-[11px] text-slate-400">
+                  Chi nhánh *
+                </label>
                 <Select
                   value={pricingForm.branchId || NONE_OPTION}
                   onOpenChange={handlePricingBranchDropdownOpenChange}
@@ -652,7 +664,7 @@ const TimeSlotsManagementPage = () => {
                     <SelectValue placeholder="Chọn chi nhánh" />
                   </SelectTrigger>
                   <SelectContent
-                    className="pricing-branch-select-content max-h-40 border-slate-300 bg-white text-slate-900"
+                    className="pricing-branch-select-content max-h-24 border-slate-300 bg-white text-slate-900"
                     position="popper"
                     side="bottom"
                     sideOffset={6}
@@ -777,13 +789,16 @@ const TimeSlotsManagementPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Ngày áp dụng *</label>
+                <label className="text-[11px] text-slate-400">
+                  Ngày áp dụng *
+                </label>
                 <Select
                   value={pricingForm.dayOfWeek || NONE_OPTION}
                   onValueChange={(value) =>
                     setPricingForm((prev) => ({
                       ...prev,
-                      dayOfWeek: value === NONE_OPTION ? "" : (value as DayOfWeek),
+                      dayOfWeek:
+                        value === NONE_OPTION ? "" : (value as DayOfWeek),
                     }))
                   }
                 >
@@ -799,7 +814,11 @@ const TimeSlotsManagementPage = () => {
                   >
                     <SelectItem value={NONE_OPTION}>Chọn ngày</SelectItem>
                     {DAY_OF_WEEK_OPTIONS.map((dayOption) => (
-                      <SelectItem className="flex justify-center" key={dayOption.value} value={dayOption.value}>
+                      <SelectItem
+                        className="flex justify-center"
+                        key={dayOption.value}
+                        value={dayOption.value}
+                      >
                         {dayOption.label}
                       </SelectItem>
                     ))}
@@ -808,7 +827,9 @@ const TimeSlotsManagementPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Giá (VND) *</label>
+                <label className="text-[11px] text-slate-400">
+                  Giá (VND) *
+                </label>
                 <Input
                   type="number"
                   min={0}
@@ -860,7 +881,7 @@ const TimeSlotsManagementPage = () => {
             )}
           </CardTitle>
           <CardDescription>
-            Trang {pagination.page + 1}/{pagination.totalPages} - Tổng: {" "}
+            Trang {pagination.page + 1}/{pagination.totalPages} - Tổng:{" "}
             {pagination.totalElements}
           </CardDescription>
         </CardHeader>
@@ -874,7 +895,7 @@ const TimeSlotsManagementPage = () => {
 
           {isError && (
             <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-8 text-center text-xs text-destructive">
-              Tải dữ liệu thất bại: {" "}
+              Tải dữ liệu thất bại:{" "}
               {error instanceof Error ? error.message : "Lỗi không xác định"}
             </div>
           )}
@@ -901,8 +922,12 @@ const TimeSlotsManagementPage = () => {
                       <td className="px-2 py-3 font-medium text-slate-100">
                         {timeSlot.id}
                       </td>
-                      <td className="px-2 py-3 text-slate-300">{timeSlot.startTime}</td>
-                      <td className="px-2 py-3 text-slate-300">{timeSlot.endTime}</td>
+                      <td className="px-2 py-3 text-slate-300">
+                        {timeSlot.startTime}
+                      </td>
+                      <td className="px-2 py-3 text-slate-300">
+                        {timeSlot.endTime}
+                      </td>
                       <td className="px-2 py-3 text-slate-300">
                         {formatDate(timeSlot.createdAt)}
                       </td>
@@ -951,7 +976,9 @@ const TimeSlotsManagementPage = () => {
                   size="sm"
                   className="bg-emerald-500 cursor-pointer text-slate-950 hover:bg-emerald-400"
                   onClick={() =>
-                    setPage((prev) => Math.min(pagination.totalPages - 1, prev + 1))
+                    setPage((prev) =>
+                      Math.min(pagination.totalPages - 1, prev + 1),
+                    )
                   }
                   disabled={!canGoNext || isFetching}
                 >
@@ -986,7 +1013,8 @@ const TimeSlotsManagementPage = () => {
             )}
           </CardTitle>
           <CardDescription>
-            Dùng bộ lọc để tìm mức giá theo chi nhánh, khu vực, sân, ngày và khoảng giờ.
+            Dùng bộ lọc để tìm mức giá theo chi nhánh, khu vực, sân, ngày và
+            khoảng giờ.
           </CardDescription>
         </CardHeader>
 
@@ -1018,7 +1046,9 @@ const TimeSlotsManagementPage = () => {
                     sideOffset={6}
                     avoidCollisions={false}
                   >
-                    <SelectItem value={NONE_OPTION}>Tất cả chi nhánh</SelectItem>
+                    <SelectItem value={NONE_OPTION}>
+                      Tất cả chi nhánh
+                    </SelectItem>
                     {tableBranchItems.map((branch) => (
                       <SelectItem key={branch.id} value={branch.id}>
                         {branch.name}
@@ -1046,7 +1076,9 @@ const TimeSlotsManagementPage = () => {
                       courtId: "",
                     }))
                   }
-                  disabled={!pricingFiltersDraft.branchId || isLoadingTableZones}
+                  disabled={
+                    !pricingFiltersDraft.branchId || isLoadingTableZones
+                  }
                 >
                   <SelectTrigger className="h-9 w-full border-slate-700 bg-slate-900/80 text-xs text-slate-200">
                     <SelectValue
@@ -1091,7 +1123,9 @@ const TimeSlotsManagementPage = () => {
                       courtId: value === NONE_OPTION ? "" : value,
                     }))
                   }
-                  disabled={!pricingFiltersDraft.branchId || isLoadingTableCourts}
+                  disabled={
+                    !pricingFiltersDraft.branchId || isLoadingTableCourts
+                  }
                 >
                   <SelectTrigger className="h-9 w-full border-slate-700 bg-slate-900/80 text-xs text-slate-200">
                     <SelectValue
@@ -1126,13 +1160,16 @@ const TimeSlotsManagementPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Ngày trong tuần</label>
+                <label className="text-[11px] text-slate-400">
+                  Ngày trong tuần
+                </label>
                 <Select
                   value={pricingFiltersDraft.dayOfWeek || NONE_OPTION}
                   onValueChange={(value) =>
                     setPricingFiltersDraft((prev) => ({
                       ...prev,
-                      dayOfWeek: value === NONE_OPTION ? "" : (value as DayOfWeek),
+                      dayOfWeek:
+                        value === NONE_OPTION ? "" : (value as DayOfWeek),
                     }))
                   }
                 >
@@ -1157,7 +1194,9 @@ const TimeSlotsManagementPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Giờ bắt đầu</label>
+                <label className="text-[11px] text-slate-400">
+                  Giờ bắt đầu
+                </label>
                 <Select
                   value={pricingFiltersDraft.startTime || NONE_OPTION}
                   onValueChange={(value) =>
@@ -1177,7 +1216,9 @@ const TimeSlotsManagementPage = () => {
                     sideOffset={6}
                     avoidCollisions={false}
                   >
-                    <SelectItem value={NONE_OPTION}>Tất cả giờ bắt đầu</SelectItem>
+                    <SelectItem value={NONE_OPTION}>
+                      Tất cả giờ bắt đầu
+                    </SelectItem>
                     {TIME_OPTIONS.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
@@ -1188,7 +1229,9 @@ const TimeSlotsManagementPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[11px] text-slate-400">Giờ kết thúc</label>
+                <label className="text-[11px] text-slate-400">
+                  Giờ kết thúc
+                </label>
                 <Select
                   value={pricingFiltersDraft.endTime || NONE_OPTION}
                   onValueChange={(value) =>
@@ -1208,7 +1251,9 @@ const TimeSlotsManagementPage = () => {
                     sideOffset={6}
                     avoidCollisions={false}
                   >
-                    <SelectItem value={NONE_OPTION}>Tất cả giờ kết thúc</SelectItem>
+                    <SelectItem value={NONE_OPTION}>
+                      Tất cả giờ kết thúc
+                    </SelectItem>
                     {TIME_OPTIONS.map((time) => (
                       <SelectItem key={time} value={time}>
                         {time}
@@ -1245,92 +1290,105 @@ const TimeSlotsManagementPage = () => {
 
           {isCourtPricingError && (
             <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-8 text-center text-xs text-destructive">
-              Tải dữ liệu giá thất bại: {" "}
+              Tải dữ liệu giá thất bại:{" "}
               {courtPricingError instanceof Error
                 ? courtPricingError.message
                 : "Lỗi không xác định"}
             </div>
           )}
 
-          {!isLoadingCourtPricings && !isCourtPricingError && courtPricings.length === 0 && (
-            <div className="rounded-xl border border-dashed border-slate-700/80 bg-slate-950/60 px-4 py-8 text-center text-xs text-slate-500">
-              Chưa có dữ liệu giá cho bộ lọc hiện tại.
-            </div>
-          )}
-
-          {!isLoadingCourtPricings && !isCourtPricingError && courtPricings.length > 0 && (
-            <div className="space-y-3">
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-left text-xs text-slate-200">
-                  <thead>
-                    <tr className="border-b border-slate-800/80 text-[11px] text-slate-400">
-                      <th className="px-2 py-2.5 font-medium">Sân</th>
-                      <th className="px-2 py-2.5 font-medium">Khu vực</th>
-                      <th className="px-2 py-2.5 font-medium">Chi nhánh</th>
-                      <th className="px-2 py-2.5 font-medium">Ngày</th>
-                      <th className="px-2 py-2.5 font-medium">Khung giờ</th>
-                      <th className="px-2 py-2.5 font-medium">Giá (VND)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {courtPricings.map((pricing) => (
-                      <tr key={pricing.id} className="border-b border-slate-900/90">
-                        <td className="px-2 py-3">{pricing.courtName}</td>
-                        <td className="px-2 py-3">{pricing.zoneName}</td>
-                        <td className="px-2 py-3">{pricing.branchName}</td>
-                        <td className="px-2 py-3">
-                          {DAY_OF_WEEK_OPTIONS.find(
-                            (day) => day.value === pricing.dayOfWeek,
-                          )?.label || pricing.dayOfWeek}
-                        </td>
-                        <td className="px-2 py-3">
-                          {pricing.startTime} - {pricing.endTime}
-                        </td>
-                        <td className="px-2 py-3">
-                          {pricing.price.toLocaleString("vi-VN")}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {!isLoadingCourtPricings &&
+            !isCourtPricingError &&
+            courtPricings.length === 0 && (
+              <div className="rounded-xl border border-dashed border-slate-700/80 bg-slate-950/60 px-4 py-8 text-center text-xs text-slate-500">
+                Chưa có dữ liệu giá cho bộ lọc hiện tại.
               </div>
+            )}
 
-              {pricingPagination.totalPages > 1 && (
-                <div className="flex items-center justify-between gap-2 border-t border-slate-800/70 pt-3 text-[11px] text-slate-400">
-                  <span>
-                    Trang {pricingPagination.page + 1}/{pricingPagination.totalPages} - Tổng {" "}
-                    {pricingPagination.totalElements}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 border-slate-700"
-                      onClick={() => setPricingPage((prev) => Math.max(0, prev - 1))}
-                      disabled={pricingPagination.page === 0 || isFetchingCourtPricings}
-                    >
-                      Trước
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="h-8 bg-emerald-500 text-slate-950 hover:bg-emerald-400"
-                      onClick={() =>
-                        setPricingPage((prev) =>
-                          Math.min(pricingPagination.totalPages - 1, prev + 1),
-                        )
-                      }
-                      disabled={
-                        pricingPagination.page >= pricingPagination.totalPages - 1 ||
-                        isFetchingCourtPricings
-                      }
-                    >
-                      Sau
-                    </Button>
-                  </div>
+          {!isLoadingCourtPricings &&
+            !isCourtPricingError &&
+            courtPricings.length > 0 && (
+              <div className="space-y-3">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-left text-xs text-slate-200">
+                    <thead>
+                      <tr className="border-b border-slate-800/80 text-[11px] text-slate-400">
+                        <th className="px-2 py-2.5 font-medium">Sân</th>
+                        <th className="px-2 py-2.5 font-medium">Khu vực</th>
+                        <th className="px-2 py-2.5 font-medium">Chi nhánh</th>
+                        <th className="px-2 py-2.5 font-medium">Ngày trong tuần</th>
+                        <th className="px-2 py-2.5 font-medium">Khung giờ</th>
+                        <th className="px-2 py-2.5 font-medium">Giá (VND)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {courtPricings.map((pricing) => (
+                        <tr
+                          key={pricing.id}
+                          className="border-b border-slate-900/90"
+                        >
+                          <td className="px-2 py-3">{pricing.courtName}</td>
+                          <td className="px-2 py-3">{pricing.zoneName}</td>
+                          <td className="px-2 py-3">{pricing.branchName}</td>
+                          <td className="px-2 py-3">{pricing.dayOfWeek}</td>
+                          <td className="px-2 py-3">
+                            {pricing.startTime} - {pricing.endTime}
+                          </td>
+                          <td className="px-2 py-3">
+                            {pricing.price.toLocaleString("vi-VN")}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              )}
-            </div>
-          )}
+
+                {pricingPagination.totalPages > 1 && (
+                  <div className="flex items-center justify-between gap-2 border-t border-slate-800/70 pt-3 text-[11px] text-slate-400">
+                    <span>
+                      Trang {pricingPagination.page + 1}/
+                      {pricingPagination.totalPages} - Tổng{" "}
+                      {pricingPagination.totalElements}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 border-slate-700"
+                        onClick={() =>
+                          setPricingPage((prev) => Math.max(0, prev - 1))
+                        }
+                        disabled={
+                          pricingPagination.page === 0 ||
+                          isFetchingCourtPricings
+                        }
+                      >
+                        Trước
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="h-8 bg-emerald-500 text-slate-950 hover:bg-emerald-400"
+                        onClick={() =>
+                          setPricingPage((prev) =>
+                            Math.min(
+                              pricingPagination.totalPages - 1,
+                              prev + 1,
+                            ),
+                          )
+                        }
+                        disabled={
+                          pricingPagination.page >=
+                            pricingPagination.totalPages - 1 ||
+                          isFetchingCourtPricings
+                        }
+                      >
+                        Sau
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
         </CardContent>
       </Card>
     </div>
@@ -1361,7 +1419,8 @@ const useSelectInfiniteScroll = (
 
     const loadMoreIfNeededByScroll = () => {
       const nearBottom =
-        viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 16;
+        viewport.scrollTop + viewport.clientHeight >=
+        viewport.scrollHeight - 16;
 
       if (nearBottom && hasNextPage && !isFetchingNextPage) {
         void fetchNextPage();

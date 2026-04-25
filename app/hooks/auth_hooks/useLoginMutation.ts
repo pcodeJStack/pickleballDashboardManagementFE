@@ -21,7 +21,13 @@ export const useLogin = () => {
         refreshToken: data.refreshToken,
         phone: data.userInfo.phone,
       });
-      router.replace("/dashboard");
+
+     if (data.userInfo.role === "CUSTOMER") {
+        router.replace("/home");
+      } else if (data.userInfo.role === "ADMIN") {
+        router.replace("/dashboard");
+      }
+
       toast.success("Đăng nhập thành công!");
     },  
   });

@@ -28,3 +28,16 @@ export interface LoginResponse {
   message: string;
   userInfo: UserInfo;
 }
+
+export interface CustomerRegisterPayload {
+  email: string;
+  password: string;
+  fullName: string;
+  phone: string;
+}
+
+export interface CustomerRegisterResponse {
+  code?: number;
+  message: string;
+  data?: Record<string, string>;
+}
