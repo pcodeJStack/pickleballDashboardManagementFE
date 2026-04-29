@@ -54,9 +54,10 @@ export type CreateBookingPayload = {
 };
 
 export type BookingResponse = {
-  code?: number;
-  message?: string;
-  data?: Record<string, string>;
+  bookingId: string;
+  paymentUrl: string;
+  qrCode: string;
+  orderCode: number;
 };
 
 export const BookingService = {

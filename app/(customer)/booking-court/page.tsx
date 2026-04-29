@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CalendarDays,
   Check,
@@ -15,12 +15,14 @@ import {
   Volleyball,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import { QRCodeSVG } from "qrcode.react";
 
 import { useGetAllBranchesQuery } from "@/app/hooks/branch_hooks/useGetAllBranchesQuery";
 import { useGetAllZonesQuery } from "@/app/hooks/zone_hooks/useGetZonesQuery";
 import { useGetAllCourtsQuery } from "@/app/hooks/court_hooks/useGetAllCourtsQuery";
 import { useCreateBookingMutation } from "@/app/hooks/booking_hooks/useCreateBookingMutation";
 import { useGetAvailableSlotsQuery } from "@/app/hooks/booking_hooks/useGetAvailableSlotsQuery";
+import { usePollingPaymentStatus } from "@/app/hooks/payment_hooks/pollingPaymentStatus";
 import { cn } from "@/lib/utils";
 import {
   Card,
@@ -30,6 +32,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -63,6 +72,13 @@ const getLocalDateKey = (date: Date) =>
 
 const parseDateKey = (dateKey: string) => new Date(`${dateKey}T12:00:00`);
 
+type BookingPaymentResult = {
+  bookingId: string;
+  paymentUrl: string;
+  qrCode: string;
+  orderCode: number;
+};
+
 const BookingPage = () => {
   const [branchId, setBranchId] = useState("");
   const [zoneId, setZoneId] = useState("");
@@ -71,9 +87,23 @@ const BookingPage = () => {
   const [selectedSlotId, setSelectedSlotId] = useState("");
   const [calendarMonth, setCalendarMonth] = useState(() => new Date());
   const [activeStep, setActiveStep] = useState(1);
+  const [bookingPayment, setBookingPayment] =
+    useState<BookingPaymentResult | null>(null);
 
   const { mutateAsync: createBooking, isPending: isCreatingBooking } =
     useCreateBookingMutation();
+
+  const orderCode = bookingPayment?.orderCode ?? null;
+  const {
+    data: paymentStatusData,
+    isFetching: isPollingPaymentStatus,
+  } = usePollingPaymentStatus(orderCode, Boolean(bookingPayment));
+
+  useEffect(() => {
+    const status = paymentStatusData?.status;
+    if (status !== "SUCCESS" && status !== "PAID") return;
+    setBookingPayment(null);
+  }, [paymentStatusData?.status]);
 
   const { data: branchData, isLoading: isLoadingBranches } =
     useGetAllBranchesQuery({
@@ -178,6 +208,7 @@ const BookingPage = () => {
     0,
   ).getDate();
   const leadingEmptyCells = calendarStart.getDay();
+  
   const calendarCells: CalendarCell[] = [
     ...Array.from({ length: leadingEmptyCells }, (_, index) => ({
       key: `empty-${index}`,
@@ -278,10 +309,11 @@ const BookingPage = () => {
         bookingDate,
       });
 
-      toast.success(response.message || "Đặt sân thành công!");
+      setBookingPayment(response);
       setSelectedSlotId("");
       setActiveStep(5);
       void refetchAvailableSlots();
+      toast.success("Đặt sân thành công. Vui lòng thanh toán để giữ chỗ.");
     } catch (error: any) {
       const message = error?.response?.data?.message || "Đặt sân thất bại.";
       toast.error(typeof message === "string" ? message : "Đặt sân thất bại.");
@@ -294,7 +326,7 @@ const BookingPage = () => {
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold tracking-tight text-slate-50 md:text-3xl">
-              Đặt sân theo từng bước
+              Đặt sân theo các bước
             </h1>
             <p className="max-w-2xl text-sm leading-relaxed text-slate-400">
               Chỉ hiển thị nội dung của bước hiện tại để thao tác nhanh, rõ ràng
@@ -936,6 +968,58 @@ const BookingPage = () => {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={Boolean(bookingPayment)} onOpenChange={(open) => !open && setBookingPayment(null)}>
+        <DialogContent className="max-w-lg border-slate-800 bg-slate-950 text-slate-50">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Thanh toán booking</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Quét mã QR bên dưới hoặc mở liên kết thanh toán để hoàn tất đơn đặt sân.
+            </DialogDescription>
+          </DialogHeader>
+
+          {bookingPayment && (
+            <div className="space-y-4 pt-2">
+              <div className="flex justify-center rounded-3xl border border-slate-800 bg-white p-4">
+                <QRCodeSVG value={bookingPayment.qrCode} size={240} level="M" includeMargin />
+              </div>
+
+              {/* <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 text-sm text-slate-200">
+                {isPollingPaymentStatus ? "Đang kiểm tra thanh toán..." : "Đang chờ thanh toán..."}
+              </div> */}
+
+              <div className="grid gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-200">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-slate-400">Mã booking</span>
+                  <span className="font-medium text-slate-50">{bookingPayment.bookingId}</span>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-slate-400">Mã đơn</span>
+                  <span className="font-medium text-slate-50">{bookingPayment.orderCode}</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  asChild
+                  className="h-11 cursor-pointer flex-1 rounded-xl bg-emerald-600 hover:!bg-emerald-500 text-white"
+                >
+                  <a href={bookingPayment.paymentUrl} target="_blank" rel="noreferrer">
+                    Thanh toán ngay
+                  </a>
+                </Button>
+                <Button
+                  type="button"
+                  className="h-11 cursor-pointer rounded-xl border-slate-700 bg-slate-950/60 text-slate-100 hover:bg-slate-800/60"
+                  onClick={() => setBookingPayment(null)}
+                >
+                  Đóng
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

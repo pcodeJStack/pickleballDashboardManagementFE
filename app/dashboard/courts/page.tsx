@@ -960,7 +960,78 @@ const CourtsManagementPage = () => {
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-slate-800 bg-slate-900/35 p-3">
+             
+              </div>
+
+              <div className="rounded-lg border border-slate-800 bg-slate-900/35 p-3">
+                <p className="text-xs font-medium uppercase tracking-[0.08em] text-slate-400">
+                  Ảnh sân
+                </p>
+
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleSelectImage}
+                />
+
+                <div className="mt-2 flex flex-col items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fileRef.current?.click()}
+                    className="group relative h-36 w-full max-w-72 overflow-hidden rounded-xl border border-dashed border-slate-600 bg-slate-900/70 transition-colors hover:border-emerald-400/70 hover:bg-slate-900"
+                  >
+                    {displayImageSrc ? (
+                      <img
+                        src={displayImageSrc}
+                        alt="Preview ảnh sân"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 text-slate-400">
+                        <div className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-500/70 bg-slate-800/80">
+                          <ImagePlus className="h-4 w-4" />
+                        </div>
+                        <span className="text-[11px]">Nhấn để thêm ảnh</span>
+                      </div>
+                    )}
+
+                    <span className="absolute bottom-1 right-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-slate-950 shadow">
+                      <Plus className="h-3 w-3" />
+                    </span>
+                  </button>
+
+                  <div className="w-full space-y-1 text-center">
+                    <p className="text-[11px] text-slate-400">
+                      Dung lượng ảnh nên dưới 5MB để tải nhanh hơn.
+                    </p>
+                    {selectedImageFile ? (
+                      <div className="mx-auto inline-flex max-w-full items-center gap-2 rounded-md border border-slate-700 bg-slate-900/70 px-2 py-1 text-[11px] text-slate-300">
+                        <span className="max-w-40 truncate">
+                          {selectedImageFile.name}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedImageFile(null);
+                            setForm((prev) => ({
+                              ...prev,
+                              imageUrl: baseImageUrl,
+                            }));
+                            if (fileRef.current) fileRef.current.value = "";
+                          }}
+                          className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded bg-slate-800 text-slate-300 hover:text-white"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="text-[11px] text-slate-500">Chưa chọn ảnh</p>
+                    )}
+                  </div>
+                </div>
+                 <div className="rounded-lg border border-slate-800 bg-slate-900/35 p-3">
                   <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.08em] text-slate-400">
                     Vận hành
                   </p>
@@ -1047,76 +1118,6 @@ const CourtsManagementPage = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-lg border border-slate-800 bg-slate-900/35 p-3">
-                <p className="text-xs font-medium uppercase tracking-[0.08em] text-slate-400">
-                  Ảnh sân
-                </p>
-
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleSelectImage}
-                />
-
-                <div className="mt-2 flex flex-col items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => fileRef.current?.click()}
-                    className="group relative h-36 w-full max-w-72 overflow-hidden rounded-xl border border-dashed border-slate-600 bg-slate-900/70 transition-colors hover:border-emerald-400/70 hover:bg-slate-900"
-                  >
-                    {displayImageSrc ? (
-                      <img
-                        src={displayImageSrc}
-                        alt="Preview ảnh sân"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 text-slate-400">
-                        <div className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-500/70 bg-slate-800/80">
-                          <ImagePlus className="h-4 w-4" />
-                        </div>
-                        <span className="text-[11px]">Nhấn để thêm ảnh</span>
-                      </div>
-                    )}
-
-                    <span className="absolute bottom-1 right-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-slate-950 shadow">
-                      <Plus className="h-3 w-3" />
-                    </span>
-                  </button>
-
-                  <div className="w-full space-y-1 text-center">
-                    <p className="text-[11px] text-slate-400">
-                      Dung lượng ảnh nên dưới 5MB để tải nhanh hơn.
-                    </p>
-                    {selectedImageFile ? (
-                      <div className="mx-auto inline-flex max-w-full items-center gap-2 rounded-md border border-slate-700 bg-slate-900/70 px-2 py-1 text-[11px] text-slate-300">
-                        <span className="max-w-40 truncate">
-                          {selectedImageFile.name}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedImageFile(null);
-                            setForm((prev) => ({
-                              ...prev,
-                              imageUrl: baseImageUrl,
-                            }));
-                            if (fileRef.current) fileRef.current.value = "";
-                          }}
-                          className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded bg-slate-800 text-slate-300 hover:text-white"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ) : (
-                      <p className="text-[11px] text-slate-500">Chưa chọn ảnh</p>
-                    )}
                   </div>
                 </div>
               </div>

@@ -46,3 +46,7 @@ export const AVAILABLE_SLOT_API = {
 export const BOOKING_API = {
   CREATE: "/booking",
 };
+
+export const PAYMENT_API = {
+  STATUS: (orderCode: string | number) => `/payment/${orderCode}/status`,
+};
