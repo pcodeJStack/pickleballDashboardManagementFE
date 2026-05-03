@@ -5,7 +5,6 @@ import RightHeroSection from "@/components/righthero_section/page";
 import { useEffect, useState } from "react";
 const PARTICLE_COUNT = 80;
 const LoginPage = () => {
-
   const [particles, setParticles] = useState<Particle[]>([]);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {

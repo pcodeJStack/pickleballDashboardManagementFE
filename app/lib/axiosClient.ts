@@ -8,6 +8,7 @@ export const axiosClient = axios.create({
   },
 });
 let isRefreshing = false;
+const useAuthStore = require("../store/auth.store").useAuthStore; // tránh circular dependency
 let failedQueue: {
   resolve: (value?: any) => void;
   reject: (error: any) => void;
@@ -32,12 +33,10 @@ axiosClient.interceptors.response.use(
     if (originalRequest._retry) {
       return Promise.reject(error);
     }
-
     const isUnauthorized = error.response?.status === 401;
-    const isTokenExpired =
-      error.response?.data?.error === "Token expired";
-
-    if (isUnauthorized && isTokenExpired) {
+    // const isTokenExpired = error.response?.data?.error === "Access token expired";
+    // console.log("istokenexpired:", isTokenExpired)
+    if (isUnauthorized) {
       //  nếu đang refresh → queue lại request
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -50,10 +49,9 @@ axiosClient.interceptors.response.use(
 
       originalRequest._retry = true;
       isRefreshing = true;
-
       try {
         // refresh token bằng client riêng (KHÔNG interceptor)
-        await refreshClient.post("/auth/refresh");
+        await refreshClient.post("/auth/refresh-token");
 
         processQueue(null);
 
@@ -63,7 +61,7 @@ axiosClient.interceptors.response.use(
         processQueue(err, null);
 
         // logout global
-        // useAuthStore.getState().clearAuth();
+        useAuthStore.getState().clearAuth();
 
         window.location.href = "/login";
 
