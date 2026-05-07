@@ -1,6 +1,8 @@
 export const AUTH_API = {
   LOGIN: "/auth/login",
   CUSTOMER_REGISTER: "/auth/customer/register",
+  VERIFY_OTP: "/auth/verify-otp",
+  RESEND_OTP: "/auth/resend-otp",
   REFRESH_TOKEN: "/auth/refresh-token",
   LOGOUT: "/auth/logout",
 };

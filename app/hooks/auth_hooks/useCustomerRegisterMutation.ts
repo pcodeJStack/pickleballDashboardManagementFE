@@ -12,7 +12,7 @@ import {
 } from "@/app/types/auth.type";
 
 export const useCustomerRegisterMutation = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   return useMutation<
     CustomerRegisterResponse,
@@ -23,7 +23,6 @@ export const useCustomerRegisterMutation = () => {
     mutationFn: (payload) => authService.customerRegister(payload),
     onSuccess: (data) => {
       toast.success(data.message || "Đăng ký thành công. Vui lòng đăng nhập.");
-      router.push("/customerLogin");
     },
   });
 };

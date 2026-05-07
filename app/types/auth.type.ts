@@ -6,6 +6,22 @@ export interface ErrorResponse {
   message: string
 }
 
+// Verify OTP
+export interface VerifyOtpPayload {
+  email: string;
+  otpInput: string;
+}
+export interface VerifyOtpResponse {
+  message: string;
+}
+
+// Resend OTP
+export interface ResendOtpPayload {
+  email: string;
+}
+export interface ResendOtpResponse {
+  message: string;
+}
 
 // LOGIN
 export interface UserInfo {

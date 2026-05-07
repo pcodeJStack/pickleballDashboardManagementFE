@@ -33,4 +33,16 @@ export const customerRegisterSchema = z
       .regex(/[A-Z]/, "Phải có ít nhất 1 chữ in hoa.")
       .regex(/[0-9]/, "Phải có ít nhất 1 số.")
       .regex(/[^A-Za-z0-9]/, "Phải có ít nhất 1 ký tự đặc biệt.")
-  })
+  });
+
+export const verifyOtpSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Vui lòng nhập email.")
+    .email("Email không hợp lệ."),
+  otpInput: z
+    .string()
+    .min(6, "OTP gồm 6 ký tự.")
+    .max(6, "OTP gồm 6 ký tự.")
+    .regex(/^[0-9]{6}$/, "OTP chỉ gồm 6 chữ số."),
+});
