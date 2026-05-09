@@ -2,6 +2,7 @@ import { axiosClient } from "../lib/axiosClient";
 import {
   CustomerRegisterPayload,
   LoginPayload,
+  LogoutResponse,
   ResendOtpPayload,
   VerifyOtpPayload,
 } from "../types/auth.type";
@@ -19,6 +20,10 @@ export const authService = {
   },
   resendOtp: async ({ email }: ResendOtpPayload) => {
     const res = await axiosClient.post("/auth/resend-otp", { email });
+    return res.data;
+  },
+  logout: async (): Promise<LogoutResponse> => {
+    const res = await axiosClient.post("/auth/logout");
     return res.data;
   },
   customerRegister: async ({email,password,fullName,phone}: CustomerRegisterPayload) => {

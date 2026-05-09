@@ -23,6 +23,11 @@ export interface ResendOtpResponse {
   message: string;
 }
 
+// Logout
+export interface LogoutResponse {
+  message: string;
+}
+
 // LOGIN
 export interface UserInfo {
     email: string;

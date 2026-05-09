@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowRight,
   CalendarDays,
@@ -11,6 +11,7 @@ import {
   Volleyball,
 } from "lucide-react";
 
+import { useLogoutMutation } from "@/app/hooks/auth_hooks/useLogoutMutation";
 import { useAuthStore } from "@/app/store/auth.store";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,10 +20,9 @@ type CustomerShellProps = {
   children: React.ReactNode;
 };
 
-const navItems = [
+const baseNavItems = [
   { href: "/home", label: "Trang chủ" },
   { href: "/booking-court", label: "Đặt sân" },
-  { href: "/customerLogin", label: "Đăng nhập" },
 ];
 
 const isActivePath = (pathname: string | null, href: string) => {
@@ -36,9 +36,16 @@ const isActivePath = (pathname: string | null, href: string) => {
 
 export function CustomerShell({ children }: CustomerShellProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isHydrated = useAuthStore((state) => state.isHydrated);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { mutateAsync: logout, isPending: isLoggingOut } = useLogoutMutation();
+
+  const navItems = isAuthenticated
+    ? [...baseNavItems, { href: "/booking-history", label: "Lịch sử đặt sân" }]
+    : [...baseNavItems, { href: "/customerLogin", label: "Đăng nhập" }];
 
   const displayName = user?.fullName?.trim() || "Khách";
   const initials = displayName
@@ -48,6 +55,17 @@ export function CustomerShell({ children }: CustomerShellProps) {
     .map((part) => part[0]?.toUpperCase())
     .join("")
     .slice(0, 2);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      // Ignore API errors and still clear local auth state.
+    } finally {
+      clearAuth();
+      router.push("/customerLogin");
+    }
+  };
 
   return (
     <div className="dark min-h-screen bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.18),transparent_34%),radial-gradient(circle_at_right,rgba(251,191,36,0.12),transparent_28%),linear-gradient(180deg,#020617_0%,#020617_45%,#07111f_100%)] text-slate-50">
@@ -98,14 +116,25 @@ export function CustomerShell({ children }: CustomerShellProps) {
             </div>
 
             {isHydrated && isAuthenticated ? (
-              <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400 text-sm font-semibold text-slate-950">
-                  {initials || "U"}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400 text-sm font-semibold text-slate-950">
+                    {initials || "U"}
+                  </div>
+                  <div className="hidden min-w-0 sm:block">
+                    <p className="truncate text-sm font-medium text-slate-50">{displayName}</p>
+                    <p className="text-[11px] text-slate-400">Tài khoản khách hàng</p>
+                  </div>
                 </div>
-                <div className="hidden min-w-0 sm:block">
-                  <p className="truncate text-sm font-medium text-slate-50">{displayName}</p>
-                  <p className="text-[11px] text-slate-400">Tài khoản khách hàng</p>
-                </div>
+
+                <Button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  variant="outline"
+                  className="h-11 rounded-full border-white/10 bg-white/5 px-5 text-slate-100 hover:bg-white/10"
+                >
+                  {isLoggingOut ? "Đang thoát..." : "Đăng xuất"}
+                </Button>
               </div>
             ) : (
               <Button asChild className="h-11 rounded-full bg-emerald-400 px-5 text-slate-950 hover:bg-emerald-300">
@@ -164,9 +193,15 @@ export function CustomerShell({ children }: CustomerShellProps) {
               <Link href="/booking-court" className="block transition-colors hover:text-slate-50">
                 Đặt sân ngay
               </Link>
-              <Link href="/customerLogin" className="block transition-colors hover:text-slate-50">
-                Đăng nhập khách hàng
-              </Link>
+              {isAuthenticated ? (
+                <Link href="/booking-history" className="block transition-colors hover:text-slate-50">
+                  Lịch sử đặt sân
+                </Link>
+              ) : (
+                <Link href="/customerLogin" className="block transition-colors hover:text-slate-50">
+                  Đăng nhập khách hàng
+                </Link>
+              )}
             </div>
           </div>
 

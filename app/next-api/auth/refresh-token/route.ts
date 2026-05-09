@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       secure: true,
       path: "/",
       sameSite: "lax",
-      maxAge: 60,
+      maxAge: 15*60,
     });
   }
 

@@ -60,6 +60,32 @@ export type BookingResponse = {
   orderCode: number;
 };
 
+export type BookingHistoryItem = {
+  id: string;
+  courtName: string;
+  courtNumber: number;
+  courtType: string;
+  surfaceType: string;
+  imageUrl?: string;
+  location?: string;
+  maxPlayers?: number;
+  bookingDate: string;
+  startTime: string;
+  endTime: string;
+  status: string;
+  totalPrice: number;
+};
+
+export type BookingHistoryResponse = {
+  content: BookingHistoryItem[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+};
+
 export const BookingService = {
   getAvailableSlots: async (
     filter: AvailableSlotsFilter,
@@ -81,6 +107,20 @@ export const BookingService = {
     const res: AxiosResponse<BookingResponse> = await axiosClient.post(
       "/booking",
       payload,
+    );
+
+    return res.data;
+  },
+
+  getMyBookings: async (
+    page = 0,
+    size = 10,
+  ): Promise<BookingHistoryResponse> => {
+    const res: AxiosResponse<BookingHistoryResponse> = await axiosClient.get(
+      "/my-bookings",
+      {
+        params: { page, size },
+      },
     );
 
     return res.data;

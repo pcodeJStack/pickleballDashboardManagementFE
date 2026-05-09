@@ -47,6 +47,7 @@ export const AVAILABLE_SLOT_API = {
 
 export const BOOKING_API = {
   CREATE: "/booking",
+  MY_BOOKINGS: "/my-bookings",
 };
 
 export const PAYMENT_API = {
